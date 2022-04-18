@@ -1,8 +1,9 @@
 package main
 
 import (
-	"context"
 	"edgerestapi/internal/comment"
+	transportHttp "edgerestapi/internal/transport/http"
+
 	"edgerestapi/internal/db"
 	"fmt"
 )
@@ -27,10 +28,11 @@ func Run() error {
 	fmt.Println("successfully connected to database")
 
 	cmtService := comment.NewService(db)
-	fmt.Println(cmtService.GetComment(
-		context.Background(),
-		"5e9f8f8f-f9b9-4f7b-b8b8-f9b9f9b9f9b9",
-	))
+
+	httpHandler := transportHttp.NewHandler(cmtService)
+	if err := httpHandler.Server(); err != nil {
+		return err
+	}
 
 	return nil
 }
