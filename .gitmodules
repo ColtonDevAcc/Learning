@@ -1,0 +1,3 @@
+[submodule "GO/goLaravel/Voo"]
+	path = GO/goLaravel/Voo
+	url = https://github.com/VooDooStack/Voo
