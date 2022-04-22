@@ -1,4 +1,4 @@
-package celeritas
+package voo
 
 type initPaths struct {
 	rootPath    string

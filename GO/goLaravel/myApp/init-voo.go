@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/voodoostack/celeritas"
+	voo "github.com/VooDooStack/Voo"
 )
 
 func initApplication() *application {
@@ -13,19 +13,18 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	//init celeritas
-	cel := &celeritas.Celeritas{}
-
-	err := cel.New(path)
+	//init voo
+	voo := &voo.Voo{}
+	err = voo.New(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cel.AppName = "app"
-	cel.Debug = true
+	voo.AppName = "myapp"
+	voo.Debug = true
 
 	app := &application{
-		app: cel,
+		App: voo,
 	}
 
 	return app

@@ -1,8 +1,8 @@
-package celeritas
+package voo
 
 import "os"
 
-func (c *Celeritas) CreateDirIfNotExist(path string) error {
+func (c *Voo) CreateDirIfNotExits(path string) error {
 	const mode = 0755
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		err := os.MkdirAll(path, mode)
@@ -10,6 +10,5 @@ func (c *Celeritas) CreateDirIfNotExist(path string) error {
 			return err
 		}
 	}
-
 	return nil
 }
