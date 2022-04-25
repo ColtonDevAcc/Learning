@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"myapp/handlers"
 	"os"
 
 	voo "github.com/VooDooStack/Voo"
@@ -21,11 +22,17 @@ func initApplication() *application {
 	}
 
 	voo.AppName = "myapp"
-	voo.Debug = true
 
-	app := &application{
+	myHandlers := &handlers.Handlers{
 		App: voo,
 	}
+
+	app := &application{
+		App:      voo,
+		Handlers: myHandlers,
+	}
+
+	app.App.Routes = app.routes()
 
 	return app
 }

@@ -1,4 +1,4 @@
-BINARY_NAME=vooApp
+BINARY_NAME=vooApp.exe
 
 ## build: builds all binaries
 build:
