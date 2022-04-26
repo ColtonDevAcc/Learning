@@ -3,7 +3,7 @@ BINARY_NAME=vooApp.exe
 ## build: builds all binaries
 build:
 	@go mod vendor 
-	@go build -o tmp/${BINARY_NAME} .
+	@go build -o tmp\${BINARY_NAME} .
 	@echo VOO built!
 
 run: build
@@ -26,7 +26,7 @@ start: run
     
 stop:
 	@echo "Starting the front end..."
-	@taskkill /IM ${BINARY_NAME} /F
+	@taskkill \IM ${BINARY_NAME} \F
 	@echo Stopped VOO
 
 restart: stop start
