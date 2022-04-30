@@ -10,6 +10,8 @@ import (
 
 	"github.com/CloudyKit/jet/v6"
 	"github.com/VooDooStack/Voo/render"
+	"github.com/VooDooStack/Voo/session"
+	"github.com/alexedwards/scs/v2"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
@@ -26,12 +28,15 @@ type Voo struct {
 	Routes   *chi.Mux
 	Render   *render.Render
 	JetViews *jet.Set
+	Session *scs.SessionManager
 	config   config
 }
 
 type config struct {
-	port     string
-	renderer string
+	port        string
+	renderer    string
+	cookie      cookieConfig
+	sessionType string
 }
 
 func (v *Voo) New(rootPath string) error {
@@ -50,13 +55,13 @@ func (v *Voo) New(rootPath string) error {
 		return err
 	}
 
-	//! read .env file
+	//! //=========== read .env file ===========//
 	err = godotenv.Load(rootPath + "/.env")
 	if err != nil {
 		return err
 	}
 
-	//! create loggers
+	//! //=========== create loggers ===========//
 	infoLog, errorLog := v.startLoggers()
 	v.InfoLog = infoLog
 	v.ErrorLog = errorLog
@@ -68,8 +73,28 @@ func (v *Voo) New(rootPath string) error {
 	v.config = config{
 		port:     os.Getenv("PORT"),
 		renderer: os.Getenv("RENDERER"),
+		cookie: cookieConfig{
+			name:     os.Getenv("COOKIE_NAME"),
+			lifetime: os.Getenv("COOKIE_LIFETIME"),
+			persist:  os.Getenv("COOKIE_PERSIST"),
+			secure:   os.Getenv("COOKIE_SECURE"),
+			domain:   os.Getenv("COOKIE_DOMAIN"),
+		},
+		sessionType: os.Getenv("SESSION_TYPE"),
 	}
 
+	//! //=========== create the session ===========//
+	sess := session.Session{
+		CookieLifetime: v.config.cookie.lifetime,
+		CookieName:     v.config.cookie.name,
+		CookiePersist:  v.config.cookie.persist,
+		SessionType:    v.config.sessionType,
+		CookieDomain:   v.config.cookie.domain,
+	}
+
+	v.Session = sess.InitSession()
+
+	//! //=========== create renderer ===========//
 	var views = jet.NewSet(
 		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
 		jet.InDevelopmentMode(),
@@ -85,7 +110,7 @@ func (v *Voo) New(rootPath string) error {
 func (v *Voo) Init(p initPaths) error {
 	root := p.rootPath
 	for _, path := range p.folderNames {
-		//! if folder does not exits, create it
+		//? if folder does not exits, create it
 		err := v.CreateDirIfNotExits(root + "/" + path)
 		if err != nil {
 			return err
@@ -95,7 +120,7 @@ func (v *Voo) Init(p initPaths) error {
 	return nil
 }
 
-//! listen and serve starts server
+//! //=========== listen and serve starts server ===========//
 func (v *Voo) ListenAndServe() {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),

@@ -15,6 +15,7 @@ func (v *Voo) routes() http.Handler {
 		mux.Use(middleware.Logger)
 	}
 	mux.Use(middleware.Recoverer)
+	mux.Use(v.SessionLoad)
 
 	return mux
 }
