@@ -3,11 +3,11 @@ package handlers
 import (
 	"net/http"
 
-	voo "github.com/VooDooStack/Voo"
+	"github.com/tsawler/celeritas"
 )
 
 type Handlers struct {
-	App *voo.Voo
+	App *celeritas.Celeritas
 }
 
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
@@ -23,18 +23,9 @@ func (h *Handlers) GoPage(w http.ResponseWriter, r *http.Request) {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}
 }
+
 func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.JetPage(w, r, "jet-template", nil, nil)
-	if err != nil {
-		h.App.ErrorLog.Println("error rendering:", err)
-	}
-}
-
-func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
-	myData := "data"
-	
-	h.App.Session.Put(r.Context(), "test", myData)
-	err := h.App.Render.JetPage(w, r, "sessions", nil, nil)
 	if err != nil {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}
