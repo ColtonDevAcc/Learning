@@ -15,7 +15,7 @@ type Session struct {
 	CookieName     string
 	CookieDomain   string
 	SessionType    string
-	CookiesSecure  string
+	CookieSecure   string
 }
 
 func (v *Session) InitSession() *scs.SessionManager {
@@ -27,17 +27,19 @@ func (v *Session) InitSession() *scs.SessionManager {
 		minutes = 60
 	}
 
-	//! should sessions be persisted?
+	//! should cookies persist
 	if strings.ToLower(v.CookiePersist) == "true" {
 		persist = true
 	}
 
 	//! should cookies be secure
-	if strings.ToLower(v.CookiePersist) == "true" {
+	if strings.ToLower(v.CookieSecure) == "true" {
 		secure = true
+	} else {
+		secure = false
 	}
 
-	//! create session
+	//create the session
 	session := scs.New()
 	session.Lifetime = time.Duration(minutes) * time.Minute
 	session.Cookie.Persist = persist
@@ -46,16 +48,13 @@ func (v *Session) InitSession() *scs.SessionManager {
 	session.Cookie.Domain = v.CookieDomain
 	session.Cookie.SameSite = http.SameSiteLaxMode
 
-	//which session store
-	switch strings.ToLower(v.SessionType) {
+	switch v.SessionType {
 	case "redis":
-
 	case "mysql", "mariadb":
-
 	case "postgres", "postgresql":
-
 	default:
-		//cookie
+		// cookie
 	}
+
 	return session
 }

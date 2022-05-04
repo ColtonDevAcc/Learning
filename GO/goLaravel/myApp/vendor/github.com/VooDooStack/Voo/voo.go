@@ -27,8 +27,8 @@ type Voo struct {
 	RootPath string
 	Routes   *chi.Mux
 	Render   *render.Render
+	Session  *scs.SessionManager
 	JetViews *jet.Set
-	Session *scs.SessionManager
 	config   config
 }
 
@@ -55,13 +55,13 @@ func (v *Voo) New(rootPath string) error {
 		return err
 	}
 
-	//! //=========== read .env file ===========//
+	//! read .env file
 	err = godotenv.Load(rootPath + "/.env")
 	if err != nil {
 		return err
 	}
 
-	//! //=========== create loggers ===========//
+	//! create loggers
 	infoLog, errorLog := v.startLoggers()
 	v.InfoLog = infoLog
 	v.ErrorLog = errorLog
@@ -83,18 +83,17 @@ func (v *Voo) New(rootPath string) error {
 		sessionType: os.Getenv("SESSION_TYPE"),
 	}
 
-	//! //=========== create the session ===========//
+	//! Create a session
 	sess := session.Session{
 		CookieLifetime: v.config.cookie.lifetime,
-		CookieName:     v.config.cookie.name,
 		CookiePersist:  v.config.cookie.persist,
+		CookieName:     v.config.cookie.name,
 		SessionType:    v.config.sessionType,
 		CookieDomain:   v.config.cookie.domain,
 	}
 
 	v.Session = sess.InitSession()
 
-	//! //=========== create renderer ===========//
 	var views = jet.NewSet(
 		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
 		jet.InDevelopmentMode(),
@@ -110,7 +109,7 @@ func (v *Voo) New(rootPath string) error {
 func (v *Voo) Init(p initPaths) error {
 	root := p.rootPath
 	for _, path := range p.folderNames {
-		//? if folder does not exits, create it
+		//! if folder does not exits, create it
 		err := v.CreateDirIfNotExits(root + "/" + path)
 		if err != nil {
 			return err
@@ -120,7 +119,7 @@ func (v *Voo) Init(p initPaths) error {
 	return nil
 }
 
-//! //=========== listen and serve starts server ===========//
+//! listen and serve starts server
 func (v *Voo) ListenAndServe() {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),
