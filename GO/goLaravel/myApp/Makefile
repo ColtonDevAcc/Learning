@@ -17,6 +17,12 @@ clean:
 	@del ./tmp/${BINARY_NAME}
 	@echo VOO Cleaned!
 
+start_compose:
+	@docker-compose up -d
+
+end_compose:
+	@docker-compose down 
+
 test:
 	@echo Testing...
 	@go test ./...
