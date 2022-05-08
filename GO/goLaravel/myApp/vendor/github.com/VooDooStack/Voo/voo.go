@@ -28,6 +28,7 @@ type Voo struct {
 	Routes   *chi.Mux
 	Render   *render.Render
 	Session  *scs.SessionManager
+	DB       Database
 	JetViews *jet.Set
 	config   config
 }
@@ -37,6 +38,7 @@ type config struct {
 	renderer    string
 	cookie      cookieConfig
 	sessionType string
+	databse     databaseConfig
 }
 
 func (v *Voo) New(rootPath string) error {
@@ -63,6 +65,21 @@ func (v *Voo) New(rootPath string) error {
 
 	//! create loggers
 	infoLog, errorLog := v.startLoggers()
+
+	//! connect to database
+	if os.Getenv("DATABASE_TYPE") != "" {
+		db, err := v.openDB(os.Getenv("DATABASE_TYPE"), v.BuildDSN())
+		if err != nil {
+			errorLog.Println(err)
+			os.Exit(1)
+		}
+
+		v.DB = Database{
+			DatabseType: os.Getenv("DATABASE_TYPE"),
+			Pool:        db,
+		}
+	}
+
 	v.InfoLog = infoLog
 	v.ErrorLog = errorLog
 	v.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
@@ -163,4 +180,29 @@ func (v *Voo) createRenderer() {
 		JetViews: v.JetViews,
 	}
 	v.Render = &myRenderer
+}
+
+func (v *Voo) BuildDSN() string {
+	var dsn string
+
+	switch os.Getenv("DATABASE_TYPE") {
+	case "postgres", "postgresql":
+		dsn = fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=%s timezone=UTC connect_timeout=5",
+			os.Getenv("DATABASE_HOST"),
+			os.Getenv("DATABASE_PORT"),
+			os.Getenv("DATABASE_USER"),
+			os.Getenv("DATABASE_NAME"),
+			os.Getenv("DATABASE_SSL_MODE"))
+
+		// we check to see if a database passsword has been supplied, since including "password=" with nothing
+		// after it sometimes causes postgres to fail to allow a connection.
+		if os.Getenv("DATABASE_PASS") != "" {
+			dsn = fmt.Sprintf("%s password=%s", dsn, os.Getenv("DATABASE_PASS"))
+		}
+
+	default:
+
+	}
+
+	return dsn
 }

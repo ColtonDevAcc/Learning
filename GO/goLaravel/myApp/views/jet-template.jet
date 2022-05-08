@@ -11,7 +11,7 @@
 <div class="col text-center">
     <div class="d-flex align-items-center justify-content-center mt-5">
         <div>
-            <img src="/public/images/celeritas.jpg" class="mb-5" style="width: 100px;height:auto;">
+            <img src="/public/images/voo.jpg" class="mb-5" style="width: 100px;height:auto;">
             <h1>Voo</h1>
             <hr>
             <small class="text-muted">this page is rendered using the jet template engine</small>

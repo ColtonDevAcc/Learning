@@ -1,4 +1,4 @@
-BINARY_NAME=vooApp.exe
+BINARY_NAME=vooApp
 
 ## build: builds all binaries
 build:
@@ -7,7 +7,7 @@ build:
 	@echo VOO built!
 
 run: build
-	@echo Staring Celeritas...
+	@echo Staring Voo...
 	@./tmp/${BINARY_NAME} &
 	@echo VOO started!
 
