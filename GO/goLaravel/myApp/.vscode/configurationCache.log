@@ -1,1 +1,1 @@
-{"buildTargets":["build","clean","end_compose","restart","run","start","start_compose","stop","test"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
+{"buildTargets":["build","clean","restart","run","start","stop","test"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

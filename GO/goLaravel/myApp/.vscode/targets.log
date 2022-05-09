@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Sun May  8 00:44:57 2022
+# Make data base, printed on Sun May  8 22:17:50 2022
 
 # Variables
 
@@ -16,7 +16,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # automatic
 ?F = $(notdir $?)
 # makefile (from `Makefile', line 1)
-BINARY_NAME = vooApp
+BINARY_NAME = VooApp
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -44,7 +44,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/xx/07hx2gwj53x2_w666v2q192h0000gn/T/vscode-ipc-c61a39b8-324c-4f8b-8628-2974d8a8b661.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/xx/07hx2gwj53x2_w666v2q192h0000gn/T/vscode-ipc-5d43af92-c7ca-4111-b841-86247ceea0c3.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -180,10 +180,10 @@ stop:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 34):
-	@echo "Starting the front end..."
-	@taskkill /IM ${BINARY_NAME} /F
-	@echo Stopped VOO
+#  commands to execute (from `Makefile', line 28):
+	@echo "Stopping Voo..."
+	@-pkill -SIGTERM -f "./tmp/${BINARY_NAME}"
+	@echo "Stopped Voo!"
 	
 
 # Not a target:
@@ -195,14 +195,6 @@ all:
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-end_compose:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 24):
-	@docker-compose down 
-	
-
 # Not a target:
 .SUFFIXES:
 #  Implicit rule search has not been done.
@@ -212,7 +204,7 @@ end_compose:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-07 22:26:20
+#  Last modified 2022-05-08 21:54:31
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -227,28 +219,21 @@ test:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 27):
-	@echo Testing...
+#  commands to execute (from `Makefile', line 21):
+	@echo "Testing..."
 	@go test ./...
-	@echo Done!
+	@echo "Done!"
 	
 
 build:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 5):
-	@go mod vendor 
+#  commands to execute (from `Makefile', line 4):
+	@go mod vendor
+	@echo "Building Voo..."
 	@go build -o tmp/${BINARY_NAME} .
-	@echo VOO built!
-	
-
-start_compose:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 21):
-	@docker-compose up -d
+	@echo "Voo built!"
 	
 
 # Not a target:
@@ -267,9 +252,9 @@ run: build
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 10):
-	@echo Staring Voo...
+	@echo "Starting Voo..."
 	@./tmp/${BINARY_NAME} &
-	@echo VOO started!
+	@echo "Voo started!"
 	
 
 clean:
@@ -277,14 +262,14 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 15):
-	@echo Cleaning...
+	@echo "Cleaning..."
 	@go clean
-	@del ./tmp/${BINARY_NAME}
-	@echo VOO Cleaned!
+	@rm tmp/${BINARY_NAME}
+	@echo "Cleaned!"
 	
 
 # files hash-table stats:
-# Load=13/1024=1%, Rehash=0, Collisions=0/29=0%
+# Load=11/1024=1%, Rehash=0, Collisions=0/27=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -296,7 +281,7 @@ clean:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sun May  8 00:44:57 2022
+# Finished Make data base on Sun May  8 22:17:50 2022
 
  
 make: *** No rule to make target `all'.  Stop.

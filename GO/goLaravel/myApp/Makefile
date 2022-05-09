@@ -1,38 +1,32 @@
-BINARY_NAME=vooApp
+BINARY_NAME=VooApp
 
-## build: builds all binaries
 build:
-	@go mod vendor 
+	@go mod vendor
+	@echo "Building Voo..."
 	@go build -o tmp/${BINARY_NAME} .
-	@echo VOO built!
+	@echo "Voo built!"
 
 run: build
-	@echo Staring Voo...
+	@echo "Starting Voo..."
 	@./tmp/${BINARY_NAME} &
-	@echo VOO started!
+	@echo "Voo started!"
 
 clean:
-	@echo Cleaning...
+	@echo "Cleaning..."
 	@go clean
-	@del ./tmp/${BINARY_NAME}
-	@echo VOO Cleaned!
-
-start_compose:
-	@docker-compose up -d
-
-end_compose:
-	@docker-compose down 
+	@rm tmp/${BINARY_NAME}
+	@echo "Cleaned!"
 
 test:
-	@echo Testing...
+	@echo "Testing..."
 	@go test ./...
-	@echo Done!
+	@echo "Done!"
 
 start: run
-    
+
 stop:
-	@echo "Starting the front end..."
-	@taskkill /IM ${BINARY_NAME} /F
-	@echo Stopped VOO
+	@echo "Stopping Voo..."
+	@-pkill -SIGTERM -f "./tmp/${BINARY_NAME}"
+	@echo "Stopped Voo!"
 
 restart: stop start
