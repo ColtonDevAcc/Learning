@@ -59,7 +59,7 @@ func (u *User) GetByEmail(email string) (*User, error) {
 	return &theUser, nil
 }
 
-func (u *User) GetByID(id int64) (*User, error) {
+func (u *User) Get(id int) (*User, error) {
 	var theUser User
 	collection := upper.Collection(u.Table())
 	res := collection.Find(up.Cond{"id =": id})
@@ -126,13 +126,13 @@ func (u *User) Insert(theUser User) (int, error) {
 	return id, nil
 }
 
-func (u *User) ResetPassword(id int64, password string) error {
+func (u *User) ResetPassword(id int, password string) error {
 	newHash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		return err
 	}
 
-	theUser, err := u.GetByID(id)
+	theUser, err := u.Get(id)
 	if err != nil {
 		return err
 	}

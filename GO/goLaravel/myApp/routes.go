@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"myapp/data"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -33,6 +34,26 @@ func (a *application) routes() *chi.Mux {
 		}
 
 		fmt.Fprintf(w, "%d: %s", id, u.FirstName)
+	})
+	a.App.Routes.Get("/get-users", func(w http.ResponseWriter, r *http.Request) {
+		users, err := a.Models.Users.GetAll()
+		if err != nil {
+			a.App.ErrorLog.Println(err)
+			return
+		}
+		for _, u := range users {
+			fmt.Fprint(w, u.FirstName, u.LastName)
+		}
+	})
+	a.App.Routes.Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+
+		u, err := a.Models.Users.Get(id)
+		fmt.Fprintf(w, "%s %s %s", u.FirstName, u.LastName, u.Email)
+		if err != nil {
+			a.App.ErrorLog.Println(err)
+			return
+		}
 	})
 
 	//!	static routes
