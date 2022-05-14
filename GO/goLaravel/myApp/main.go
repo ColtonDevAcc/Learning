@@ -8,13 +8,12 @@ import (
 )
 
 type application struct {
-	App      *voo.Voo
+	App *voo.Voo
 	Handlers *handlers.Handlers
-	Models   data.Models
+	Models data.Models
 }
 
 func main() {
-	v := initApplication()
-	v.App.ListenAndServe()
-
+	c := initApplication()
+	c.App.ListenAndServe()
 }

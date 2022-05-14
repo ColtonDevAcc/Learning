@@ -72,7 +72,7 @@ github.com/upper/db/v4/internal/sqladapter/exql
 github.com/upper/db/v4/internal/sqlbuilder
 # golang.org/x/crypto v0.0.0-20220507011949-2cf3adece122
 ## explicit; go 1.17
-golang.org/x/crypto/Bcrypt
+golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/pbkdf2
 # golang.org/x/text v0.3.7

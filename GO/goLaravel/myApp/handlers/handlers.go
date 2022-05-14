@@ -24,6 +24,7 @@ func (h *Handlers) GoPage(w http.ResponseWriter, r *http.Request) {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}
 }
+
 func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
 	err := h.App.Render.JetPage(w, r, "jet-template", nil, nil)
 	if err != nil {
@@ -32,16 +33,16 @@ func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
-	myData := "data"
+	myData := "bar"
 
 	h.App.Session.Put(r.Context(), "foo", myData)
 
-	myValue := h.App.Session.Get(r.Context(), "foo")
+	myValue := h.App.Session.GetString(r.Context(), "foo")
 
 	vars := make(jet.VarMap)
 	vars.Set("foo", myValue)
 
-	err := h.App.Render.JetPage(w, r, "sessions", nil, nil)
+	err := h.App.Render.JetPage(w, r, "sessions", vars, nil)
 	if err != nil {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}

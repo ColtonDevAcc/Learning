@@ -15,7 +15,7 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	//init voo
+	// init voo
 	voo := &voo.Voo{}
 	err = voo.New(path)
 	if err != nil {

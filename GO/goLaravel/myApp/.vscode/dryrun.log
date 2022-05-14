@@ -1,8 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/coltonbristow/Development/Projects/Learning/GO/goLaravel/myApp'
-go mod vendor
-echo "Building Voo..."
-go build -o tmp/VooApp .
-echo "Voo built!"
-make: Leaving directory `/Users/coltonbristow/Development/Projects/Learning/GO/goLaravel/myApp'
- 

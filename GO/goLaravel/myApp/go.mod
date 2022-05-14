@@ -26,6 +26,6 @@ require (
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/lib/pq v1.10.5 // indirect
 	github.com/upper/db/v4 v4.5.2
-	golang.org/x/crypto v0.0.0-20220507011949-2cf3adece122 // indirect
+	golang.org/x/crypto v0.0.0-20220507011949-2cf3adece122
 	golang.org/x/text v0.3.7 // indirect
 )
